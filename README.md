@@ -24,6 +24,7 @@ $$
 
 
 Anteriormente tenía esta fórmula:
+
 $$
 CI(RS)= \frac{\sum_{i=0}^{n-1}(n_{i}^{RS}*(o_{i,1}^{RS}-o_{i,2}^{RS})^2)}{\sum_{i=0}^{n-1}n_{i}^{RS}}
 $$
@@ -54,14 +55,3 @@ $$
 Esfuerzo(RS,E)=\sum_{i=0}^{n-1} \lceil |o_{i,1}^{RS}-o_{i,2}^{RS}|*r_{i}^{RS}*e_{i} \rceil 
 $$
 Hay que tener en cuenta que $Esfuerzo(RS,E)\leq R_{max}$ 
-
-
-
-## Caracterización
-
-Considerar un valor $k$ y $r$  tal que:
-
-- $0 \leq k\leq n_{i}^{RS}$
-- $r\leq R_{max}$
-
-Para el valor solución considerar si se suma un agente más o no se añade otro agente o bien considerar otro grupo de agentes
