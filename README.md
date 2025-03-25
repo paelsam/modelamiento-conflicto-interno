@@ -36,6 +36,7 @@ Una estrategia de cambio de opinión de una red $RS$ (de ahora en adelante lo ll
 $$
 <e_{0},e_{1},\dots,e_{n-1}> | \text{ } e_{i} \in \{ 0,1,2,\dots,n_{i}^{RS} \}
 $$
+
 donde $e_{i}$ representa el número de agentes del grupo de agentes $i$ a los cuales se le ha cambiado su opinión por medio de $E$.
 
 Aplicar esta estrategia da como resultado una nueva red $RS'$ con la misma estructura que la red $RS$ pero donde la opinión de los agentes cuya opinión ha sido cambiada ahora tiene el mismo valor en $o_{i,1}^{RS'}$ y $o_{i,2}^{RS'}$. Es decir, si $ModCI(RS,E)=RS'$ entonces:
@@ -47,6 +48,7 @@ $$
     n_{i}^{RS} & \text{si $e_{i}=0$}
   \end{cases}
 $$
+
 Se asume que los agentes a los cuales ajustó su opinión por medio de $E$ ya no hacen parte de $RS'$.
 
 El valor de esfuerzo de ajustar las opiniones sobre $RS$ con la estrategia $E$ se define de la forma:
@@ -54,4 +56,5 @@ El valor de esfuerzo de ajustar las opiniones sobre $RS$ con la estrategia $E$ s
 $$
 Esfuerzo(RS,E)=\sum_{i=0}^{n-1} \lceil |o_{i,1}^{RS}-o_{i,2}^{RS}|*r_{i}^{RS}*e_{i} \rceil 
 $$
+
 Hay que tener en cuenta que $Esfuerzo(RS,E)\leq R_{max}$ 
