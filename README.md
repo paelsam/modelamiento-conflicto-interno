@@ -34,7 +34,7 @@ Sin embargo de decidió cambiarla por temas de facilidad.
 Una estrategia de cambio de opinión de una red $RS$ (de ahora en adelante lo llamaremos $E$) se define como: 
 
 $$
-<e_{0},e_{1},\dots,e_{n-1}> | \text{ } e_{i} \in \{ 0,1,2,\dots,n_{i}^{RS} \}
+< e_{0},e_{1},\dots,e_{n-1} > | \text{ } e_{i} \in \{ 0,1,2,\dots,n_{i}^{RS} \}
 $$
 
 donde $e_{i}$ representa el número de agentes del grupo de agentes $i$ a los cuales se le ha cambiado su opinión por medio de $E$.
