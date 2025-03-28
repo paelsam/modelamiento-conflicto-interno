@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 from helpers.procesar_pruebas import procesar_pruebas
 from models.p1_adaii_fb import ModCI_fb
+from models.p1_adaii_vz import ModCI_voraz
 
 class ModCIGUI:
     def __init__(self, root):
@@ -34,6 +35,7 @@ class ModCIGUI:
         self.solution_var = tk.StringVar()
         self.solution_dropdown = tk.OptionMenu(self.top_frame, self.solution_var, "Fuerza Bruta")
         self.solution_dropdown = tk.OptionMenu(self.top_frame, self.solution_var, "Programación Dinámica")
+        self.solution_dropdown = tk.OptionMenu(self.top_frame, self.solution_var, "Voraz")  
         self.solution_dropdown.grid(row=0, column=4, padx=5)
 
 
@@ -71,7 +73,12 @@ class ModCIGUI:
         
         try:
             red_social = procesar_pruebas(self.file_path)
-            conflicto, esfuerzo, estrategia = ModCI_fb(red_social)
+            if self.solution_var.get() == "Voraz":
+                conflicto, esfuerzo, estrategia = ModCI_voraz(red_social)
+            elif self.solution_var.get() == "Programación Dinámica":
+                pass
+            else: 
+                conflicto, esfuerzo, estrategia = ModCI_fb(red_social)
 
         
             self.result_text.delete(1.0, tk.END)

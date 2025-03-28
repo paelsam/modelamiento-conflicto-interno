@@ -10,9 +10,9 @@ def procesar_pruebas(ruta_prueba: str) -> list[list[list[int]], int]:
             combinaciones_posibles *= a[0] + 1
         r_max = int(lineas[-1])   
 
-    print(f"Combinaciones posibles de {ruta_prueba}: {combinaciones_posibles}")
+    # print(f"Combinaciones posibles de {ruta_prueba}: {combinaciones_posibles}")
                 
-    return [SA, r_max]
+    return [SA, r_max]  
         
         
     

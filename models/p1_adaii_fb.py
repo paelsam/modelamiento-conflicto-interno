@@ -66,12 +66,11 @@ if __name__ == "__main__":
     prueba6 = pp("./pruebas/Prueba6.txt")
     prueba7 = pp("./pruebas/Prueba7.txt")
     prueba8 = pp("./pruebas/Prueba8.txt")
-    prueba9 = pp("./pruebas/Prueba9.txt")
     prueba10 = pp("./pruebas/Prueba10.txt")
     prueba11 = pp("./pruebas/Prueba11.txt")
 
     print("----- Fuerza Bruta -----")
-    E_fb, conf_fb, cost_fb = ModCI_fb(prueba6)
+    E_fb, conf_fb, cost_fb = ModCI_fb(prueba2)
     print("Estrategia:", E_fb)
     print("Conflicto modificado:", conf_fb)
     print("Esfuerzo:", cost_fb)
