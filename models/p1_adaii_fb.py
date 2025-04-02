@@ -19,7 +19,6 @@ def conflicto_modificado(RS, E):
         # Quedan (n_i - e_i) agentes en el grupo
         n_rest = n_i - E[i]
         num += n_rest * (o1 - o2)**2
-    # Evitar división por cero (se debe asegurar que no se remueven todos los agentes)
     return num/den if den > 0 else 0.0
 
 
@@ -70,7 +69,7 @@ if __name__ == "__main__":
     prueba11 = pp("./pruebas/Prueba11.txt")
 
     print("----- Fuerza Bruta -----")
-    E_fb, conf_fb, cost_fb = ModCI_fb(prueba2)
+    E_fb, conf_fb, cost_fb = ModCI_fb(prueba7)
     print("Estrategia:", E_fb)
     print("Conflicto modificado:", conf_fb)
     print("Esfuerzo:", cost_fb)

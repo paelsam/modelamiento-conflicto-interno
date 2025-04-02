@@ -58,3 +58,18 @@ Esfuerzo(RS,E)=\sum_{i=0}^{n-1} \lceil |o_{i,1}^{RS}-o_{i,2}^{RS}|*r_{i}^{RS}*e_
 $$
 
 Hay que tener en cuenta que $Esfuerzo(RS,E)\leq R_{max}$ 
+
+
+## Aplicación con Programación Dinámica
+
+Sea $M[i,r]$ una matriz de tamaño $i\times (r + 1)$:
+
+$$
+M[i,r]=
+\begin{cases}
+\min\limits_{\substack{0\leq e\leq n_{i}}} \{ M[i-1,r-esfuerzo(i,e)] + conflicto(i,e)\}  & \text{si $i\geq0$}  \\ \\
+\infty & \text{en otro caso}
+\end{cases}
+$$
+
+Donde $esfuerzo(i,e)$ representa el esfuerzo individual del grupo $i$. $conflicto(i,e)$ representa el conflicto individual del grupo $i$.
