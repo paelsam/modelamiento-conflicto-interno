@@ -3,7 +3,7 @@ from helpers.procesar_pruebas import procesar_pruebas as pp
 
 # Función para calcular el conflicto interno (No se usa)
 def conflicto_interno(RS: list[list, int]) -> int:
-    return sum([sa[0]*(sa[1] - sa[2])**2 for sa in RS[0]]) / sum([sa[0] for sa in RS[0]])
+    return sum([sa[0]*(sa[1] - sa[2])**2 for sa in RS[0]]) / len(RS[0]) if len(RS[0]) > 0 else 0.0
 
 # Función para calcular el esfuerzo
 def esfuerzo(RS: list[list, int], E: list[int]) -> int:
