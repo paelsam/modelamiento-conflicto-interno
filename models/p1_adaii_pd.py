@@ -21,11 +21,9 @@ def ModCI_pd(RS):
 
     for i in range(1, n + 1):
         for r in range(R_max + 1):
-            print(f"Grupo {i}, R: {r}")
             for e in range(grupos[i-1][0] + 1):
                 esf = esfuerzo_individual(grupos[i-1], e)
                 conf = conflicto_individual(grupos[i-1], e)
-                # print(f"Grupo {i}, Esfuerzo: {esf}, Conflicto: {conf}, R: {r}")
                 if r >= esf and MCI[i-1][r - esf] + conf < MCI[i][r]:
                     MCI[i][r] = MCI[i-1][r - esf] + conf
                     decision[i][r] = e
@@ -45,20 +43,20 @@ def ModCI_pd(RS):
         r -= esfuerzo_individual(grupos[i-1], e)
     E.reverse()
     
-    print("----- Matriz de Conflicto Modificado -----")
-    for i in range(n + 1):
-        for j in range(R_max + 1):
-            print(f"{MCI[i][j]:<5}", end=" ")
-        print()
-    print("----- Decisiones -----")
-    for i in range(n + 1):
-        for j in range(R_max + 1):
-            print(f"{decision[i][j]:<5}", end=" ")
-        print()
-    print("----- Conflicto -----")
-    print(mejor_ci)
-    print("----- Esfuerzo -----")
-    print(mejor_esfuerzo)
+    # print("----- Matriz de Conflicto Modificado -----")
+    # for i in range(n + 1):
+    #     for j in range(R_max + 1):
+    #         print(f"{MCI[i][j]:<5}", end=" ")
+    #     print()
+    # print("----- Decisiones -----")
+    # for i in range(n + 1):
+    #     for j in range(R_max + 1):
+    #         print(f"{decision[i][j]:<5}", end=" ")
+    #     print()
+    # print("----- Conflicto -----")
+    # print(mejor_ci)
+    # print("----- Esfuerzo -----")
+    # print(mejor_esfuerzo)
 
     return E, mejor_ci / n, mejor_esfuerzo
 

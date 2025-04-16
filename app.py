@@ -2,13 +2,14 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 from helpers.procesar_pruebas import procesar_pruebas
 from models.p1_adaii_fb import ModCI_fb
-from models.p1_adaii_vz import ModCI_voraz
+from models.p1_adaii_pd import ModCI_pd
+from models.p1_adaii_vz_p2 import ModCI_voraz
 
 class ModCIGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("Moderar el conflicto interno de opiniones en una red social (ModCI)")
-        self.root.geometry("800x500")
+        self.root.geometry("900x500")
 
   
         self.title_label = tk.Label(root, text="Moderar el conflicto interno de opiniones en una red social (ModCI)", font=("Arial", 16, "bold"), fg="green")
@@ -33,9 +34,9 @@ class ModCIGUI:
         self.solution_label.grid(row=0, column=3, padx=5, sticky="w")
 
         self.solution_var = tk.StringVar()
-        self.solution_dropdown = tk.OptionMenu(self.top_frame, self.solution_var, "Fuerza Bruta")
-        self.solution_dropdown = tk.OptionMenu(self.top_frame, self.solution_var, "Programación Dinámica")
-        self.solution_dropdown = tk.OptionMenu(self.top_frame, self.solution_var, "Voraz")  
+        self.solution_var.set("Selecciona un algoritmo")
+        opciones = ["Fuerza Bruta", "Programación Dinámica", "Voraz"]
+        self.solution_dropdown = tk.OptionMenu(self.top_frame, self.solution_var, *opciones)
         self.solution_dropdown.grid(row=0, column=4, padx=5)
 
 
@@ -71,22 +72,27 @@ class ModCIGUI:
             messagebox.showerror("Error", "Por favor, selecciona un archivo de entrada.")
             return
         
+        algoritmo = self.solution_var.get()
+
         try:
             red_social = procesar_pruebas(self.file_path)
-            if self.solution_var.get() == "Voraz":
-                conflicto, esfuerzo, estrategia = ModCI_voraz(red_social)
-            elif self.solution_var.get() == "Programación Dinámica":
-                pass
-            else: 
-                conflicto, esfuerzo, estrategia = ModCI_fb(red_social)
 
-        
+            if algoritmo == "Voraz":
+                conflicto, esfuerzo, estrategia = ModCI_voraz(red_social)
+            elif algoritmo == "Programación Dinámica":
+                conflicto, esfuerzo, estrategia = ModCI_pd(red_social)
+            elif algoritmo == "Fuerza Bruta":
+                conflicto, esfuerzo, estrategia = ModCI_fb(red_social)
+            else:
+                messagebox.showerror("Error", "Por favor, selecciona un algoritmo válido.")
+                return
+
             self.result_text.delete(1.0, tk.END)
             self.result_text.insert(tk.END, f"Conflicto interno: {conflicto}\n")
             self.result_text.insert(tk.END, f"Esfuerzo: {esfuerzo}\n")
             self.result_text.insert(tk.END, f"Estrategia: {estrategia}\n")
 
-            self.download_button.config(state="normal")  
+            self.download_button.config(state="normal")
 
         except Exception as e:
             messagebox.showerror("Error", f"Error al procesar el archivo: {e}")

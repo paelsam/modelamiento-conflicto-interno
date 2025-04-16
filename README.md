@@ -67,7 +67,8 @@ Sea $M[i,r]$ una matriz de tamaño $i\times (r + 1)$:
 $$
 M[i,r]=
 \begin{cases}
-\min\limits_{\substack{0\leq e\leq n_{i}}} \{ M[i-1,r-esfuerzo(i,e)] + conflicto(i,e)\}  & \text{si $i\geq0$}  \\ \\
+0 & \text{si  $i=0$ $\land$ $r=0$ } \\ \\
+\min\limits_{\substack{0\leq e\leq n_{i}}} \{ M[i-1,r-esfuerzo(i,e)] + conflicto(i,e)\}  & \text{si $esfuerzo(i,e)\geq r$}  \\ \\
 \infty & \text{en otro caso}
 \end{cases}
 $$
