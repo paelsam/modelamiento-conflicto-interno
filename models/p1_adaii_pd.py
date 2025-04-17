@@ -77,8 +77,8 @@ if __name__ == "__main__":
     prueba11 = pp("./pruebas/Prueba11.txt")
 
     print("----- Programación dinámica -----")
-    # E_fb, conf_fb, cost_fb = ModCI_pd(prueba7)
-    E_fb, conf_fb, cost_fb = ModCI_pd([[[1,-10,10,0.2], [2,5,-1,0.3]], 5])
+    E_fb, conf_fb, cost_fb = ModCI_pd(prueba4)
+    # E_fb, conf_fb, cost_fb = ModCI_pd([[[1,-10,10,0.2], [2,5,-1,0.3]], 5])
     # E_fb, conf_fb, cost_fb = ModCI_pd([[[3,-100,50,0.5], [1,100,80,0.1], [1,-10,0,0.5]], 80])
     print("Estrategia:", E_fb)
     print("Conflicto modificado:", conf_fb)

@@ -1,7 +1,7 @@
 import math
 import os
 from helpers.procesar_pruebas import procesar_pruebas as pp
-from models.p1_adaii_pd import ModCI_pd
+from models.p1_adaii_fb import ModCI_fb
 from models.p1_adaii_pd import ModCI_pd
 
 
@@ -27,58 +27,65 @@ def conflicto_modificado(RS: list[list, int], E: list[int]) -> float:
     
     return numerador / denominador if denominador > 0 else 0.0
 
+def conflicto_individual(sa, e):
+    n, o1, o2 = sa[0], sa[1], sa[2]
+    return (n - e) * (o1 - o2)**2
+
+def esfuerzo_individual(sa, e):
+    o1, o2, r = sa[1], sa[2], sa[3]
+    return math.ceil(abs(o1 - o2) * r * e)
+
 def ModCI_voraz(RS):
     grupos, R_max = RS
     n = len(grupos)
     estrategia = [0] * n
     R_actual = 0
-
-
-    grupos_con_indices = list(enumerate(grupos))
     
-    # Función de prioridad: (d_o^2 / costo_por_agente) * min(n_i, R_restante / costo_por_agente)
-    def calcular_prioridad(grupo, R_restante):
-        idx, (n_i, o1, o2, r) = grupo
+    # Prioridad por agente
+    def prioridad(grupo):
+        _, o1, o2, r = grupo
         d_o = abs(o1 - o2)
-        if d_o == 0 or r == 0:
-            return (0.0, 0)
+        if d_o == 0:
+            return 0.0
+        costo_por_agente = math.ceil(d_o * r**1.5)
+        if costo_por_agente == 0:
+            return float('inf')
+        return (d_o ** 2)  / costo_por_agente
+
+
+    # Ordenamos por prioridad descendente
+    grupos_ordenados = sorted(
+        enumerate(grupos),
+        key=lambda x: prioridad(x[1]),
+        reverse=True
+    )
+
+    for idx, (n_i, o1, o2, r) in grupos_ordenados:
+        if R_actual >= R_max:
+            break
+
+        d_o = abs(o1 - o2)
+        if d_o == 0:
+            continue
+
+        # Calculamos el máximo de agentes que podemos modificar
         costo_por_agente = math.ceil(d_o * r)
         if costo_por_agente == 0:
-            return (float('inf'), n_i)
-        max_agentes_posibles = min(n_i, R_restante // costo_por_agente)
-        if max_agentes_posibles == 0:
-            return (0.0, 0)
-        prioridad = (d_o ** 2) / costo_por_agente
-        return (prioridad * max_agentes_posibles, max_agentes_posibles)
-    
+            continue
 
-    while R_actual < R_max:
-        mejor_prioridad = -1
-        mejor_idx = -1
-        mejor_max_agentes = 0
-        
+        max_posible = min(
+            n_i,
+            (R_max - R_actual) // costo_por_agente
+        )
 
-        for idx, grupo in grupos_con_indices:
-            if estrategia[idx] == grupo[0]:  # Si ya se modificaron todos
-                continue
-            R_restante = R_max - R_actual
-            prioridad_actual, max_agentes = calcular_prioridad((idx, grupo), R_restante)
-            if prioridad_actual > mejor_prioridad:
-                mejor_prioridad = prioridad_actual
-                mejor_idx = idx
-                mejor_max_agentes = max_agentes
-        
-        if mejor_idx == -1:
-            break
-        
+        if max_posible > 0:
+            estrategia[idx] = max_posible
+            R_actual += max_posible * costo_por_agente
 
-        n_i, o1, o2, r = grupos[mejor_idx]
-        d_o = abs(o1 - o2)
-        costo_por_agente = math.ceil(d_o * r)
-        estrategia[mejor_idx] += mejor_max_agentes
-        R_actual += mejor_max_agentes * costo_por_agente
+    CI_final = conflicto_modificado(RS, estrategia)
+    esfuerzo_final = R_actual  
 
-    return estrategia, conflicto_modificado(RS, estrategia), R_actual
+    return estrategia, CI_final, esfuerzo_final
 
 if __name__ == "__main__":
     
@@ -104,23 +111,24 @@ if __name__ == "__main__":
         # Calculos de las diferencias entre los resultados de la fuerza bruta y el algoritmo voraz
         
         print("")
-        print("----- Programación dinámica -----")
-        E_pdcost_pd, conf_pdcost_pd, cost_pd = ModCI_pd(candidato)
-        print("Estrategia PD:", E_pdcost_pd)
-        print("Conflicto modificado PD:", conf_pdcost_pd)
-        print("Esfuerzo PD:", cost_pd)
+        print("----- Fuerza Bruta -----")
+        E_fbcost_fb, conf_fbcost_fb, cost_fb = ModCI_pd(candidato)
+        print("Estrategia FB:", E_fbcost_fb)
+        print("Conflicto modificado FB:", conf_fbcost_fb)
+        print("Esfuerzo FB:", cost_fb)
         
         print("")
         print("----- Comparación -----")
-        print("Diferencia en estrategia:", [E_vz[i] - E_pdcost_pd[i] for i in range(len(E_vz))])
-        print("Diferencia en conflicto modificado:", conf_vz - conf_pdcost_pd)
-        print("Diferencia en esfuerzo:", cost_vz - cost_pd)
-        print("Porcentaje de diferenca de conflicto modificado:", (conf_vz - conf_pdcost_pd) / conf_pdcost_pd * 100 if conf_pdcost_pd > 0 else 0, "%")
+        print("Diferencia en estrategia:", [E_vz[i] - E_fbcost_fb[i] for i in range(len(E_vz))])
+        print("Diferencia en conflicto modificado:", conf_vz - conf_fbcost_fb)
+        print("Diferencia en esfuerzo:", cost_vz - cost_fb)
+        print("Porcentaje de diferenca de conflicto modificado:", (conf_vz - conf_fbcost_fb) / conf_fbcost_fb * 100 if conf_fbcost_fb > 0 else 0, "%")
         
-        diferencia_porcentaje = (conf_vz - conf_pdcost_pd) / conf_pdcost_pd * 100 if conf_pdcost_pd > 0 else 0
+        diferencia_porcentaje = (conf_vz - conf_fbcost_fb) / conf_fbcost_fb * 100 if conf_fbcost_fb > 0 else 0
         lista_porcentajes.append(diferencia_porcentaje)
 
         print("\n")
     
     promedio_porcentaje = sum(lista_porcentajes) / len(lista_porcentajes) if lista_porcentajes else 0
     print("Porcentaje promedio de diferencia de conflicto modificado:", promedio_porcentaje, "%")
+        
