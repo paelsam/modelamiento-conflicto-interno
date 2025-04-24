@@ -68,7 +68,7 @@ $$
 M[i,r]=
 \begin{cases}
 0 & \text{si  $i=0$ $\land$ $r=0$ } \\ \\
-\min\limits_{\substack{0\leq e\leq n_{i}}} \{ M[i-1,r-esfuerzo(i,e)] + conflicto(i,e)\}  & \text{si $esfuerzo(i,e)\geq r$}  \\ \\
+\min\limits_{\substack{0\leq e\leq n_{i}}} \{ M[i-1,r-esfuerzo(i,e)] + conflicto(i,e)\}  & \text{si $esfuerzo(i,e)\leq r$}  \\ \\
 \infty & \text{en otro caso}
 \end{cases}
 $$
