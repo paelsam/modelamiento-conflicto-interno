@@ -5,6 +5,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 import numpy as np
 from helpers import procesar_pruebas
+import time
 
 # Modelos 
 from models import (p1_adaii_fb, p1_adaii_vz_p3, p1_adaii_pd)
@@ -289,9 +290,13 @@ class ModCIApp(ttk.Window):
             messagebox.showwarning("Advertencia", "Por favor selecciona dos algoritmos diferentes para comparar.")
             return
         
+        inicio_tiempo1 = time.time()
         resultado1 = self.ejecutar_algoritmo(alg1)
+        tiempo1 = time.time() - inicio_tiempo1
+        inicio_tiempo2 = time.time()
         resultado2 = self.ejecutar_algoritmo(alg2)
-        
+        tiempo2 = time.time() - inicio_tiempo2
+
         if not resultado1 or not resultado2:
             messagebox.showerror("Error", "Error al ejecutar los algoritmos.")
             return
@@ -346,21 +351,23 @@ class ModCIApp(ttk.Window):
         porcentaje_error = None
         referencia = None
         if alg1 == "Voraz" and (alg2 == "Programación Dinámica" or alg2 == "Fuerza Bruta"):
-            referencia = alg2
-            porcentaje_error = (conflicto1 - conflicto2) / conflicto2 * 100 if conflicto2 > 0 else 0
+            referencia = alg2 
+            porcentaje_error = 1 - (conflicto2/conflicto1) if conflicto1 > 0 else 0
         elif alg2 == "Voraz" and (alg1 == "Programación Dinámica" or alg1 == "Fuerza Bruta"):
             referencia = alg1
-            porcentaje_error = (conflicto2 - conflicto1) / conflicto1 * 100 if conflicto1 > 0 else 0
+            porcentaje_error = 1 - (conflicto1/conflicto2) if conflicto2 > 0 else 0
         
         self.comparison_results_text.insert('end', f"{alg1}:\n")
         self.comparison_results_text.insert('end', f"  Estrategia: {estrategia1}\n")
         self.comparison_results_text.insert('end', f"  Conflicto: {conflicto1:.6f}\n")
-        self.comparison_results_text.insert('end', f"  Esfuerzo: {esfuerzo1}\n\n")
+        self.comparison_results_text.insert('end', f"  Esfuerzo: {esfuerzo1}\n")
+        self.comparison_results_text.insert('end', f"  Tiempo de ejecución: {tiempo1:.6f} segundos\n\n")
         
         self.comparison_results_text.insert('end', f"{alg2}:\n")
         self.comparison_results_text.insert('end', f"  Estrategia: {estrategia2}\n")
         self.comparison_results_text.insert('end', f"  Conflicto: {conflicto2:.6f}\n")
-        self.comparison_results_text.insert('end', f"  Esfuerzo: {esfuerzo2}\n\n")
+        self.comparison_results_text.insert('end', f"  Esfuerzo: {esfuerzo2}\n")
+        self.comparison_results_text.insert('end', f"  Tiempo de ejecución: {tiempo2:.6f} segundos\n\n")
         
         self.comparison_results_text.insert('end', f"Diferencias:\n")
         self.comparison_results_text.insert('end', f"  Conflicto: {abs(conflicto1 - conflicto2):.6f}\n")
