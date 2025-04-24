@@ -1,5 +1,12 @@
 import math
+import sys
 import os
+
+# Obtiene la ruta absoluta del directorio smart-drone
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Agrega smart-drone al sys.path
+sys.path.append(BASE_DIR)
 from helpers.procesar_pruebas import procesar_pruebas as pp
 from models.p1_adaii_pd import ModCI_pd
 from models.p1_adaii_pd import ModCI_pd
@@ -41,7 +48,6 @@ def ModCI_voraz(RS):
         costo_por_agente = math.ceil(d_o * r)
         if costo_por_agente == 0:
             return float('inf')
-        print((d_o ** 2) / costo_por_agente)
         return (d_o ** 2) / costo_por_agente  # Prioridad por agente
 
     # Ordenar grupos con la prioridad como criterio
@@ -109,9 +115,9 @@ if __name__ == "__main__":
         print("Diferencia en estrategia:", [E_vz[i] - E_pdcost_pd[i] for i in range(len(E_vz))])
         print("Diferencia en conflicto modificado:", conf_vz - conf_pdcost_pd)
         print("Diferencia en esfuerzo:", cost_vz - cost_pd)
-        print("Porcentaje de diferenca de conflicto modificado:", (conf_vz - conf_pdcost_pd) / conf_pdcost_pd * 100 if conf_pdcost_pd > 0 else 0, "%")
+        print("Porcentaje de diferenca de conflicto modificado:", (1 - (conf_pdcost_pd/conf_vz))*100 if conf_pdcost_pd > 0 else 0, "%")
         
-        diferencia_porcentaje = (conf_vz - conf_pdcost_pd) / conf_pdcost_pd * 100 if conf_pdcost_pd > 0 else 0
+        diferencia_porcentaje = (1 - (conf_pdcost_pd/conf_vz))*100 if conf_pdcost_pd > 0 else 0
         lista_porcentajes.append(diferencia_porcentaje)
 
         print("\n")

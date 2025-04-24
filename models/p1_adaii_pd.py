@@ -43,16 +43,6 @@ def ModCI_pd(RS):
         r -= esfuerzo_individual(grupos[i-1], e)
     E.reverse()
     
-    print("----- Matriz de Conflicto Modificado -----")
-    for i in range(n + 1):
-        for j in range(R_max + 1):
-            print(f"{MCI[i][j]:<5}", end=" ")
-        print()
-    print("----- Decisiones -----")
-    for i in range(n + 1):
-        for j in range(R_max + 1):
-            print(f"{decision[i][j]:<5}", end=" ")
-        print()
     # print("----- Conflicto -----")
     # print(mejor_ci)
     # print("----- Esfuerzo -----")

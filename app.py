@@ -8,7 +8,7 @@ from helpers import procesar_pruebas
 import time
 
 # Modelos 
-from models import (p1_adaii_fb, p1_adaii_vz_p3, p1_adaii_pd)
+from models import (p1_adaii_fb, p1_adaii_pd, p1_adaii_vz_p4)
 
 class ModCIApp(ttk.Window):
     def __init__(self):
@@ -280,7 +280,7 @@ class ModCIApp(ttk.Window):
 
     def ejecutar_algoritmo(self, nombre_algoritmo):
         if nombre_algoritmo == "Voraz":
-            return p1_adaii_vz_p3.ModCI_voraz(self.RS)
+            return p1_adaii_vz_p4.ModCI_voraz(self.RS)
         elif nombre_algoritmo == "Fuerza Bruta":
             return p1_adaii_fb.ModCI_fb(self.RS)
         elif nombre_algoritmo == "Programación Dinámica":
@@ -411,7 +411,7 @@ class ModCIApp(ttk.Window):
         
         if porcentaje_error is not None:
             self.comparison_results_text.insert('end', f"\nPorcentaje de error (Voraz vs {referencia}):\n")
-            self.comparison_results_text.insert('end', f"  {porcentaje_error:.2f}%\n")
+            self.comparison_results_text.insert('end', f"  {porcentaje_error*100:.6f}%\n")
             
 
 if __name__ == "__main__":
