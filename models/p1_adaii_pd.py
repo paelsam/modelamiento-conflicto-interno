@@ -43,16 +43,16 @@ def ModCI_pd(RS):
         r -= esfuerzo_individual(grupos[i-1], e)
     E.reverse()
     
-    # print("----- Matriz de Conflicto Modificado -----")
-    # for i in range(n + 1):
-    #     for j in range(R_max + 1):
-    #         print(f"{MCI[i][j]:<5}", end=" ")
-    #     print()
-    # print("----- Decisiones -----")
-    # for i in range(n + 1):
-    #     for j in range(R_max + 1):
-    #         print(f"{decision[i][j]:<5}", end=" ")
-    #     print()
+    print("----- Matriz de Conflicto Modificado -----")
+    for i in range(n + 1):
+        for j in range(R_max + 1):
+            print(f"{MCI[i][j]:<5}", end=" ")
+        print()
+    print("----- Decisiones -----")
+    for i in range(n + 1):
+        for j in range(R_max + 1):
+            print(f"{decision[i][j]:<5}", end=" ")
+        print()
     # print("----- Conflicto -----")
     # print(mejor_ci)
     # print("----- Esfuerzo -----")
@@ -75,10 +75,11 @@ if __name__ == "__main__":
     prueba8 = pp("./pruebas/Prueba8.txt")
     prueba10 = pp("./pruebas/Prueba10.txt")
     prueba11 = pp("./pruebas/Prueba11.txt")
+    prueba15 = pp("./pruebas/Prueba15.txt")
 
     print("----- Programación dinámica -----")
-    E_fb, conf_fb, cost_fb = ModCI_pd(prueba4)
-    # E_fb, conf_fb, cost_fb = ModCI_pd([[[1,-10,10,0.2], [2,5,-1,0.3]], 5])
+    # E_fb, conf_fb, cost_fb = ModCI_pd(prueba15)
+    E_fb, conf_fb, cost_fb = ModCI_pd([[[1,-10,10,0.2], [2,5,-1,0.3]], 5])
     # E_fb, conf_fb, cost_fb = ModCI_pd([[[3,-100,50,0.5], [1,100,80,0.1], [1,-10,0,0.5]], 80])
     print("Estrategia:", E_fb)
     print("Conflicto modificado:", conf_fb)

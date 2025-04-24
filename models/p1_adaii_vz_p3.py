@@ -47,10 +47,10 @@ def ModCI_voraz(RS):
         d_o = abs(o1 - o2)
         if d_o == 0:
             return 0.0
-        costo_por_agente = math.ceil(d_o * r**1.5)
+        costo_por_agente = math.ceil(d_o * r) + 1
         if costo_por_agente == 0:
             return float('inf')
-        return (d_o ** 2)  / costo_por_agente
+        return (d_o ** 2) / costo_por_agente
 
 
     # Ordenamos por prioridad descendente

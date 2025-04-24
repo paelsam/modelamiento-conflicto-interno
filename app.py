@@ -11,7 +11,7 @@ from models import (p1_adaii_fb, p1_adaii_vz_p3, p1_adaii_pd)
 
 class ModCIApp(ttk.Window):
     def __init__(self):
-        super().__init__(title="ModCI - Moderar Conflicto Interno", themename="journal", size=(1000, 650))
+        super().__init__(title="ModCI - Moderar Conflicto Interno", themename="journal", size=(1000, 650), resizable=(True, True))
         self.file_path = None
         self.algorithms = ["Fuerza Bruta", "Programación Dinámica", "Voraz"]
         self.test_data = None
@@ -271,6 +271,7 @@ class ModCIApp(ttk.Window):
         elif nombre_algoritmo == "Fuerza Bruta":
             return p1_adaii_fb.ModCI_fb(self.RS)
         elif nombre_algoritmo == "Programación Dinámica":
+            print(self.RS)
             return p1_adaii_pd.ModCI_pd(self.RS)
         else:
             return None
@@ -318,6 +319,9 @@ class ModCIApp(ttk.Window):
         self.ax.set_xticks(ind)
         self.ax.set_xticklabels([str(i+1) for i in range(n_grupos)])
         self.ax.legend()
+        # Hacer el gráfico más responsivo si se redimensiona la ventana
+        self.ax.set_ylim(0, max(max(estrategia1), max(estrategia2)) * 1.1)  # Ajustar el límite superior del eje y
+        self.ax.grid(axis='y', linestyle='--', alpha=0.7)
         
         # Mostrar valores sobre las barras
         def autolabel(rects):
