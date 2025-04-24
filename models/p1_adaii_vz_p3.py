@@ -1,5 +1,12 @@
 import math
+import sys
 import os
+
+# Obtiene la ruta absoluta del directorio smart-drone
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Agrega smart-drone al sys.path
+sys.path.append(BASE_DIR)
 from helpers.procesar_pruebas import procesar_pruebas as pp
 from models.p1_adaii_fb import ModCI_fb
 from models.p1_adaii_pd import ModCI_pd
@@ -121,10 +128,10 @@ if __name__ == "__main__":
         print("----- Comparación -----")
         print("Diferencia en estrategia:", [E_vz[i] - E_fbcost_fb[i] for i in range(len(E_vz))])
         print("Diferencia en conflicto modificado:", conf_vz - conf_fbcost_fb)
-        print("Diferencia en esfuerzo:", cost_vz - cost_fb)
-        print("Porcentaje de diferenca de conflicto modificado:", (conf_vz - conf_fbcost_fb) / conf_fbcost_fb * 100 if conf_fbcost_fb > 0 else 0, "%")
+        print("Diferencia en esfuerzo:", cost_vz - cost_fb) 
+        print("Porcentaje de diferenca de conflicto modificado:", 1 - (conf_fbcost_fb/conf_vz)*100 if conf_vz > 0 else 0, "%")
         
-        diferencia_porcentaje = (conf_vz - conf_fbcost_fb) / conf_fbcost_fb * 100 if conf_fbcost_fb > 0 else 0
+        diferencia_porcentaje = 1 - (conf_fbcost_fb/conf_vz)*100 if conf_vz > 0 else 0
         lista_porcentajes.append(diferencia_porcentaje)
 
         print("\n")

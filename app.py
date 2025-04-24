@@ -258,8 +258,20 @@ class ModCIApp(ttk.Window):
         solucion, valor_solucion, esfuerzo_final = self.ejecutar_algoritmo(alg)
         
         resultado += f"{alg.upper()}".center(100, "-")
-        resultado += f"\nSolución: {solucion}"
-        resultado += f"\nValor de la solución: {valor_solucion}"
+        resultado += f"\nEstrategia: {solucion}\n"
+        grupos_dict = self.test_data['grupos']
+        resultado += "\nRed modificada:\n"
+        for i, grupo in enumerate(grupos_dict):
+            agentes_orig = grupo['n_agentes']
+            agentes_mod = agentes_orig - solucion[i]
+            if agentes_mod > 0:
+                linea = (
+                    f"  {i+1}. Agentes: {agentes_mod}, "
+                    f"Op1: {grupo['opinion1']}, Op2: {grupo['opinion2']}, "
+                    f"Rigidez: {grupo['rigidez']:.3f}\n"
+                )
+                resultado += f"{linea}\n"
+        resultado += f"Conflicto: {valor_solucion}"
         resultado += f"\nEsfuerzo: {esfuerzo_final}"
             
             
@@ -359,12 +371,36 @@ class ModCIApp(ttk.Window):
         
         self.comparison_results_text.insert('end', f"{alg1}:\n")
         self.comparison_results_text.insert('end', f"  Estrategia: {estrategia1}\n")
+        grupos_dict = self.test_data['grupos']
+        self.comparison_results_text.insert('end', "\nRed modificada:\n")
+        for i, grupo in enumerate(grupos_dict):
+            agentes_orig = grupo['n_agentes']
+            agentes_mod = agentes_orig - estrategia1[i]
+            if agentes_mod > 0:
+                linea = (
+                    f"  {i+1}. Agentes: {agentes_mod}, "
+                    f"Op1: {grupo['opinion1']}, Op2: {grupo['opinion2']}, "
+                    f"Rigidez: {grupo['rigidez']:.3f}\n"
+                )
+                self.comparison_results_text.insert('end', f"{linea}\n")
         self.comparison_results_text.insert('end', f"  Conflicto: {conflicto1:.6f}\n")
         self.comparison_results_text.insert('end', f"  Esfuerzo: {esfuerzo1}\n")
         self.comparison_results_text.insert('end', f"  Tiempo de ejecución: {tiempo1:.6f} segundos\n\n")
         
         self.comparison_results_text.insert('end', f"{alg2}:\n")
         self.comparison_results_text.insert('end', f"  Estrategia: {estrategia2}\n")
+        grupos_dict = self.test_data['grupos']
+        self.comparison_results_text.insert('end', "\nRed modificada:\n")
+        for i, grupo in enumerate(grupos_dict):
+            agentes_orig = grupo['n_agentes']
+            agentes_mod = agentes_orig - estrategia2[i]
+            if agentes_mod > 0:
+                linea = (
+                    f"  {i+1}. Agentes: {agentes_mod}, "
+                    f"Op1: {grupo['opinion1']}, Op2: {grupo['opinion2']}, "
+                    f"Rigidez: {grupo['rigidez']:.3f}\n"
+                )
+                self.comparison_results_text.insert('end', f"{linea}\n")
         self.comparison_results_text.insert('end', f"  Conflicto: {conflicto2:.6f}\n")
         self.comparison_results_text.insert('end', f"  Esfuerzo: {esfuerzo2}\n")
         self.comparison_results_text.insert('end', f"  Tiempo de ejecución: {tiempo2:.6f} segundos\n\n")
