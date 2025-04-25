@@ -42,11 +42,6 @@ def ModCI_pd(RS):
         E.append(e)
         r -= esfuerzo_individual(grupos[i-1], e)
     E.reverse()
-    
-    # print("----- Conflicto -----")
-    # print(mejor_ci)
-    # print("----- Esfuerzo -----")
-    # print(mejor_esfuerzo)
 
     return E, mejor_ci / n, mejor_esfuerzo
 

@@ -16,6 +16,8 @@ class ModCIApp(ttk.Window):
         self.file_path = None
         self.algorithms = ["Fuerza Bruta", "Programación Dinámica", "Voraz"]
         self.test_data = None
+        # self.state("zoomed") # Solo funciona en windows
+        self.attributes('-zoomed', True)
         self.RS = None
         
         title_frame = ttk.Frame(self)
@@ -28,13 +30,13 @@ class ModCIApp(ttk.Window):
         )
         title_label.pack(anchor=CENTER)
 
-        notebook = ttk.Notebook(self)
-        notebook.pack(fill=BOTH, expand=YES, padx=10, pady=10)
+        self.notebook = ttk.Notebook(self)
+        self.notebook.pack(fill=BOTH, expand=YES, padx=10, pady=10)
 
-        self.tab_single = ttk.Frame(notebook)
-        self.tab_compare = ttk.Frame(notebook)
-        notebook.add(self.tab_single, text="Ejecutar algoritmo")
-        notebook.add(self.tab_compare, text="Comparar algoritmos")
+        self.tab_single = ttk.Frame(self.notebook)
+        self.tab_compare = ttk.Frame(self.notebook)
+        self.notebook.add(self.tab_single, text="Ejecutar algoritmo")
+        self.notebook.add(self.tab_compare, text="Comparar algoritmos")
 
         self.setup_single_tab()
         self.setup_compare_tab()
@@ -73,6 +75,7 @@ class ModCIApp(ttk.Window):
         # TextArea para mostrar resultados
         self.resultado_text = ttk.Text(frame, height=12)
         self.resultado_text.pack(fill=BOTH, expand=True, pady=10)
+        ttk.Button(frame, text="Guardar resultados", command=lambda: self.guardar_resultados(self.resultado_text), bootstyle=INFO).pack(anchor=E, pady=(0, 10))
         
         # Configuración del panel derecho (información de la prueba)
         self.test_info_text = ttk.Text(right_frame, width=45, height=20)
@@ -148,6 +151,7 @@ class ModCIApp(ttk.Window):
         # Pestaña de comparación de resultados
         results_tab = ttk.Frame(info_notebook)
         info_notebook.add(results_tab, text="Resultados")
+        ttk.Button(results_tab, text="Guardar comparación", command=lambda: self.guardar_resultados(self.comparison_results_text), bootstyle=INFO).pack(anchor=E, pady=(5, 0), padx=5)
         
         self.comparison_results_text = ttk.Text(results_tab, width=45, height=20)
         self.comparison_results_text.pack(fill=BOTH, expand=True)
@@ -226,8 +230,6 @@ class ModCIApp(ttk.Window):
                 self.test_info_text.insert('end', f"Op2: {grupo['opinion2']}, ")
                 self.test_info_text.insert('end', f"Rigidez: {grupo['rigidez']}\n")
 
-            if len(self.test_data['grupos']) > 10:
-                self.test_info_text.insert('end', f"\n... y {len(self.test_data['grupos']) - 10} grupos más\n")
 
     def mostrar_test_info_compare(self):
         if self.test_data:
@@ -243,9 +245,6 @@ class ModCIApp(ttk.Window):
                 self.test_info_text_compare.insert('end', f"Op1: {grupo['opinion1']}, ")
                 self.test_info_text_compare.insert('end', f"Op2: {grupo['opinion2']}, ")
                 self.test_info_text_compare.insert('end', f"Rigidez: {grupo['rigidez']}\n")
-
-            if len(self.test_data['grupos']) > 10:
-                self.test_info_text_compare.insert('end', f"\n... y {len(self.test_data['grupos']) - 10} grupos más\n")
 
     def procesar_algoritmo(self):
         alg = self.alg_var.get()
@@ -288,6 +287,45 @@ class ModCIApp(ttk.Window):
             return p1_adaii_pd.ModCI_pd(self.RS)
         else:
             return None
+    
+    def guardar_resultados(self, contenido_text_widget):
+        contenido = contenido_text_widget.get(1.0, 'end').strip()
+        if not contenido:
+            messagebox.showinfo("Información", "No hay resultados para guardar.")
+            return
+
+        archivo = filedialog.asksaveasfilename(defaultextension=".txt",
+                                                filetypes=[("Archivo de texto", "*.txt")],
+                                                title="Guardar resultados")
+        if archivo:
+            try:
+                with open(archivo, 'w', encoding='utf-8') as f:
+                    # Encabezado con la ruta del archivo
+                    if hasattr(self, 'file_path') and self.file_path:
+                        f.write(f"Ruta de la prueba ejecutada: {self.file_path}\n\n")
+
+                    # Agregar información de prueba (según la pestaña activa)
+                    current_tab = self.notebook.tab(self.notebook.select(), "text")
+                    if current_tab == "Ejecutar algoritmo" and hasattr(self, 'test_info_text'):
+                        info = self.test_info_text.get(1.0, 'end').strip()
+                        if info:
+                            f.write("Información de la red social:\n")
+                            f.write(info + "\n\n")
+                    elif current_tab == "Comparar algoritmos" and hasattr(self, 'test_info_text_compare'):
+                        info = self.test_info_text_compare.get(1.0, 'end').strip()
+                        if info:
+                            f.write("Información de la red social:\n")
+                            f.write(info + "\n\n")
+
+                    # Agregar resultados del algoritmo
+                    f.write("Resultados del algoritmo:\n")
+                    f.write(contenido)
+
+                messagebox.showinfo("Éxito", f"Resultados guardados en:\n{archivo}")
+            except Exception as e:
+                messagebox.showerror("Error", f"No se pudo guardar el archivo:\n{str(e)}")
+
+
 
     def comparar_algoritmos(self):
         if not self.file_path or not self.RS:
