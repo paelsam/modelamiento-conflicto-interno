@@ -16,7 +16,7 @@ class ModCIApp(ttk.Window):
         self.file_path = None
         self.algorithms = ["Fuerza Bruta", "Programación Dinámica", "Voraz"]
         self.test_data = None
-        #self.state("zoomed") # Solo funciona en windows
+        # self.state("zoomed") # Para usuarios de Windows
         self.attributes('-zoomed', True)
         self.RS = None
         

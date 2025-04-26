@@ -100,3 +100,12 @@ pip install -r requirements.txt
 ```bash
 python main.py
 ```
+
+## IMPORTANTE (usuarios Windows)
+
+En el archivo `main.py`, si estás en Windows, debes **descomentar** la siguiente línea y **comentar** la que está debajo:
+
+```python
+self.state("zoomed")  # Para usuarios de Windows
+# self.attributes('-zoomed', True)
+```
