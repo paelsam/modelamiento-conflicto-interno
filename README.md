@@ -74,3 +74,29 @@ M[i,r]=
 $$
 
 Donde $esfuerzo(i,e)$ representa el esfuerzo individual del grupo $i$. $conflicto(i,e)$ representa el conflicto individual del grupo $i$.
+
+## Requisitos
+
+- Python 3.8 o superior  
+- pip
+
+## Instalación
+
+1. Clona este repositorio:
+
+```bash
+git clone https://github.com/paelsam/modelamiento-conflicto-interno.git
+cd modelamiento-conflicto-interno
+```
+
+2. Instala las dependencias:
+
+```bash
+pip install -r requirements.txt
+```
+
+3. Ejecuta la aplicación:
+
+```bash
+python main.py
+```
